@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      #map {
+        height: 400px;
+        width: 100%;
+        }
+      .hero {
+          font-family: 'Trebuchet MS', Helvetica, sans-serif;
+          padding: 20px 0;
+          color: #ffffff;
+            background-image:
+            url("https://images.oyster.com/photos/upper-west-side-v10868-720.jpg");
+        }
+      .hero a {
+          color: #ff1a1a;
+          font-size: 1.25em;
+          text-decoration: none;
+        }
+    </style>
+  </head>
+  <body>
+      <h1>Sijia Liang's Google Map.</h1>
+  <div class="hero">
+    <p>A Google Map JavaScript API</p>
+    <a href="#">Try now.</a>
+  </div>
+
+<!-- Google Map Area...... -->
+    <h3>My Google Maps</h3>
+    <div id="map"></div>
+    <script>
+      function initMap() {
+        var uluru = {lat: 40.730610, lng: -73.935242};
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 10,
+          center: uluru
+        });
+        var marker = new google.maps.Marker({
+          position: uluru,
+          map: map
+        });
+      }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAyhnyKjw26Aj6QFe4lKPwv3YazB6CauB8&callback=initMap">
+    </script>
+
+<script type="text/javascript">
+    function downloadUrl(url,callback) {
+ var request = window.ActiveXObject ?
+     new ActiveXObject('Microsoft.XMLHTTP') :
+     new XMLHttpRequest;
+
+ request.onreadystatechange = function() {
+   if (request.readyState == 4) {
+     request.onreadystatechange = doNothing;
+     callback(request, request.status);
+   }
+ };
+
+ request.open('GET', url, true);
+ request.send(null);
+}
+
+downloadUrl('https://storage.googleapis.com/mapsdevsite/json/mapmarkers2.xml', function(data) {
+  var xml = data.responseXML;
+  var markers = xml.documentElement.getElementsByTagName('marker');
+  Array.prototype.forEach.call(markers, function(markerElem) {
+    var id = markerElem.getAttribute('id');
+    var name = markerElem.getAttribute('name');
+    var address = markerElem.getAttribute('address');
+    var type = markerElem.getAttribute('type');
+    var point = new google.maps.LatLng(
+        parseFloat(markerElem.getAttribute('lat')),
+        parseFloat(markerElem.getAttribute('lng')));
+
+    var infowincontent = document.createElement('div');
+    var strong = document.createElement('strong');
+    strong.textContent = name
+    infowincontent.appendChild(strong);
+    infowincontent.appendChild(document.createElement('br'));
+
+    var text = document.createElement('text');
+    text.textContent = address
+    infowincontent.appendChild(text);
+    var icon = customLabel[type] || {};
+    var marker = new google.maps.Marker({
+      map: map,
+      position: point,
+      label: icon.label
+    });
+</script>
+  </body>
+</html>
+
+
+
